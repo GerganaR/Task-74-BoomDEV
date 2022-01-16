@@ -15,7 +15,7 @@ function App() {
     return isRendered;
   };
 
-  const showIcon = useMemo(() => checkNumberHandler(), [number]);
+  const showIcon = useMemo(() => checkNumberHandler(), [number,setNumber]);
 
   return (
     <div className="App">
