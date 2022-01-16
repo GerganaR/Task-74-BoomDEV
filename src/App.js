@@ -1,33 +1,37 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useMemo } from "react";
 import "./App.css";
 
 function App() {
-  const number = useRef();
-  const [useMemo, setUseMemo] = useState(true);
+  const [number, setNumber] = useState("");
+  const [isRendered, setIsRendered] = useState(true);
   const re = new RegExp("^[0-9]");
-  let result;
 
   const checkNumberHandler = () => {
-    if ((result = re.test(number.current.value))) {
-      setUseMemo(true);
+    if (re.test(number)) {
+      setIsRendered(true);
     } else {
-      setUseMemo(false);
+      setIsRendered(false);
     }
+    return isRendered;
   };
+
+  const showIcon = useMemo(() => checkNumberHandler(), [number]);
 
   return (
     <div className="App">
       <div className="control has-icons-right">
         <input
-          onChange={checkNumberHandler}
+          onChange={(e) => {
+            setNumber(e.target.value);
+          }}
           className="input is-large"
           type="text"
           placeholder="Enter number..."
-          ref={number}
+          value={number}
         />
         <span className="icon is-small is-right">
-          {useMemo && <i className="fas fa-check" />}
-          {!useMemo && <i className="fas fa-times" />}
+          {isRendered && <i className="fas fa-check" />}
+          {!isRendered && <i className="fas fa-times" />}
         </span>
       </div>
     </div>
