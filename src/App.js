@@ -1,41 +1,35 @@
-import React, { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import "./App.css";
 
 function App() {
-  const [number, setNumber] = useState("");
-  const [isRendered, setIsRendered] = useState(true);
-  const re = new RegExp("^[0-9]");
+  const [text, setText] = useState("");
+  const [valid, setValid] = useState(false);
 
-  const checkNumberHandler = () => {
-    if (re.test(number)) {
-      setIsRendered(true);
-    } else {
-      setIsRendered(false);
-    }
-    return isRendered;
-  };
-
-  const showIcon = useMemo(() => checkNumberHandler(), [number,setNumber]);
+  useMemo(() => {
+    isTextNumber(text);
+  }, [text]);
 
   return (
     <div className="App">
       <div className="control has-icons-right">
         <input
-          onChange={(e) => {
-            setNumber(e.target.value);
-          }}
           className="input is-large"
           type="text"
           placeholder="Enter number..."
-          value={number}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
         />
         <span className="icon is-small is-right">
-          {isRendered && <i className="fas fa-check" />}
-          {!isRendered && <i className="fas fa-times" />}
+          <i className={valid ? "fas fa-check" : "fas fa-times"} />
         </span>
       </div>
     </div>
   );
+
+  function isTextNumber(text) {
+    const reg = new RegExp("^\\d+$");
+    setValid(reg.test(text));
+  }
 }
 
 export default App;
